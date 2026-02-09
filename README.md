@@ -8,4 +8,27 @@
 
 __Remember to include all required documentation and HOWTOs, including how to create and populate the database, how to run and test the API, the url to the entrypoint, instructions on how to setup and run the client, instructions on how to setup and run the axiliary service and instructions on how to deploy the api in a production environment__
 
+---
+
+## Technologies
+
+- Python 3
+- Flask
+- Flask-SQLAlchemy
+- SQLite (default database)
+
+---
+
+## Dependencies
+
+Project dependencies are listed in `requirements.txt`.
+
+Main dependencies:
+- Flask
+- Flask-SQLAlchemy
+
+Install dependencies with:
+
+```bash
+pip install -r requirements.txt
 
