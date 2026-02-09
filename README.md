@@ -32,3 +32,9 @@ Install dependencies with:
 ```bash
 pip install -r requirements.txt
 
+```
+Populate the test database:
+
+```bash
+python populate.py
+
