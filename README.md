@@ -29,15 +29,18 @@ Main dependencies:
 - Flask
 - Flask-SQLAlchemy
 - Flask-RESTful
+--- 
 
-Install dependencies with:
+## Install dependencies without virtual environment
+
+Step 1: install requirements
 
 ```bash
 pip install -r requirements.txt
 
 ```
-
-## Setting up the framework:
+---
+## With virtual environment:
 
 Step 1: Create a virtual environment
 ```bash
@@ -64,6 +67,7 @@ pip install -r requirements.txt
 
 ```
 
+---
 
 ## Populate the test database:
 
