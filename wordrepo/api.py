@@ -29,4 +29,8 @@ def create_app():
   #Translation endpoints
   api.add_resource(TranslationListResource, "/words/<string:word_id>/translations")
   api.app_resource(TranslationResource, "/translations/<string:translation_id>")
+  # Category endpoints
+  api.add_resource(CategoryListResource, "/categories")
+  api.app_resource(CategoryResource, "/categories/<string:category_id>")
+  
   return app
