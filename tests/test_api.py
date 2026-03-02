@@ -8,3 +8,11 @@ def test_create_user_success(client):
   })
   assert response.status_code == 201
   assert "id" in response json
+
+def test_create_user_missing_field(client):
+  response = client.post("/users", json={
+    "email":"test@example.com"
+  })
+  assert response.status_code == 400
+
+
