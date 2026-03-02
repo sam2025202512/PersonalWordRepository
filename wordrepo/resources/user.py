@@ -1,1 +1,59 @@
+from flask import request
+from flask_restful import Resource
+from werkzeug.security import generate_password_hash
+from wordrepo.models import db, User
+import uuid
 
+def user_to_dict(user):
+  return {
+    "id": user.id,
+    "email": user.email,
+    "created_at": user.created_at.isoformat()
+  }
+
+class UserListResources(Resource):
+  def post(self):
+    """Create a new user"""
+    data = request.get_json()
+    # Check that everything required is given
+    if not data or "email" not in data or "password" not in data:
+      return {"error": "email and password are required"}, 400
+    #Check if email already in use
+    if User.query.filter_by(email=data["email"]).first():
+      return {"error": "email already in use"}, 409
+    new_user = User(
+      id=str(uuid.uuid4()),
+      email=data["email"],
+      password_hash = generate_password_hash(data["password"])
+    )
+    db.session.add(new_user)
+    db.session.commit()
+    return user_to_dict(new_user), 201
+
+class UserResource(Resource):
+  def get(self, user_id):
+    """Retrieve a single user by ID"""
+    user = User.query.get(user_id)
+    if not user:
+      return {"error": "user not found"}, 404
+    return user_to_dict(user), 200
+  def put(self, user_id):
+    """Update a user's email or password"""
+    user = User.query.get(user_id)
+    if not user:
+      return {"error": "user not found"}, 404
+    data = request.get_json()
+    if "email" in data:
+      user.email = data["email"]
+    if "password" in data:
+      user.password_hash = generate_password_hash(data["password"])
+    db.session.commit()
+    return user_to_dict(user), 200
+  def delete(self, user_id):
+    """Delete a user."""
+    user = User.query.get(user_id)
+    if not user:
+      return {"error": "user not found"}, 404
+    db.session.delete(user)
+    db.session.commit()
+    return {"message": "user deleted"}, 200
