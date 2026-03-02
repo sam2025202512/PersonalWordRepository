@@ -51,3 +51,30 @@ def test_create_word_success(client):
   response = client.post("/words", json={ "text": "run", "language": "en", "user_id": user_id, "part_of_speech_id": pos_id })
   assert response.status_code == 201
   assert response.json["text"] == "run"
+
+def test_create_word_missing_fields(client): 
+  # Test that missing required fields returns 400
+  response = client.post("/words", json={"text": "cat"})
+  assert response.status_code == 400
+
+def test_get_word_not_found(client):
+  # Test that requesting a non-existing word returns 404
+  response = client.get("/words/does-not-exist")
+  assert response.status_code == 404
+
+def test_delete_word(client): 
+  # Test that you can delete words
+  user_resp = client.post("/users", json={ "email": "deleteword@example.com", "password": "secret" })
+  user_id = user_resp.json["id"] 
+  pos_resp = client.post("/parts-of-speech", json={"name": "adjective"})
+  pos_id = pos_resp.json["id"] 
+  word_resp = client.post("/words", json={ 
+    "text": "fast", 
+    "language": "en", 
+    "user_id": user_id, 
+    "part_of_speech_id": pos_id }) 
+  word_id = word_resp.json["id"]
+  delete_resp = client.delete(f"/words/{word_id}") 
+  assert delete_resp.status_code == 200 
+  get_resp = client.get(f"/words/{word_id}") 
+  assert get_resp.status_code == 404
