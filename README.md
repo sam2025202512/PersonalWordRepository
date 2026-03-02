@@ -31,7 +31,7 @@ Main dependencies:
 - Flask-RESTful
 --- 
 
-## Install dependencies without virtual environment
+## Option 1: install dependencies without virtual environment
 
 Step 1: install requirements
 
@@ -39,8 +39,8 @@ Step 1: install requirements
 pip install -r requirements.txt
 
 ```
----
-## With virtual environment:
+
+## Option 2: Use virtual environment and install dependencies:
 
 Step 1: Create a virtual environment
 ```bash
