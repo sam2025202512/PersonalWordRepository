@@ -6,7 +6,7 @@
 * Student 3. Syed Mahim - Syed.Mahim@student.oulu.fi
 
 
-__Remember to include all required documentation and HOWTOs, including how to create and populate the database, how to run and test the API, the url to the entrypoint, instructions on how to setup and run the client, instructions on how to setup and run the axiliary service and instructions on how to deploy the api in a production environment__
+This project implements a RESTful API for storing, categorizing and translating personal vocabulary. The repository includes full documentation on setup, database initialization, running the API, and code quality verification.
 
 ---
 
@@ -17,6 +17,7 @@ __Remember to include all required documentation and HOWTOs, including how to cr
 - Flask-SQLAlchemy
 - Flask-RESTful
 - SQLite (default database)
+- PyLint (code quality)
 
 ---
 
@@ -35,6 +36,28 @@ Install dependencies with:
 pip install -r requirements.txt
 
 ```
+## Setting up the framework:
+
+Step 1: Create a virtual environment
+```bash
+python -m venv venv
+
+```
+
+Step 2: Activate the environment
+For Windows:
+```bash
+venv\Scripts\activate
+
+```
+
+For macOS/Linux:
+```bash
+source venv/bin/activate
+
+```
+
+
 ## Populate the test database:
 
 ```bash
