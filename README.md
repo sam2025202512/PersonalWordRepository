@@ -57,6 +57,12 @@ source venv/bin/activate
 
 ```
 
+Step 3: Install dependencies
+```bash
+pip install -r requirements.txt
+
+```
+
 
 ## Populate the test database:
 
