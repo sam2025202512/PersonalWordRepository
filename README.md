@@ -27,6 +27,7 @@ Project dependencies are listed in `requirements.txt`.
 Main dependencies:
 - Flask
 - Flask-SQLAlchemy
+- Flask-RESTful
 
 Install dependencies with:
 
