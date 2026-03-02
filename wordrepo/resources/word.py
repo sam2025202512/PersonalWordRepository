@@ -1,7 +1,7 @@
+import uuid
 from flask import request
 from flask_restful import Resource
 from wordrepo.models import db, Word, User, PartOfSpeech, Category
-import uuid
 
 def word_to_dict(word):
   return {
@@ -14,6 +14,7 @@ def word_to_dict(word):
   }
 
 class WordListResource(Resource):
+  """Handles POST for words."""
   def post(self):
     """Create a new word."""
     data = request.get_json()
@@ -46,6 +47,7 @@ class WordListResource(Resource):
     return word_to_dict(new_word), 201
 
 class WordResource(Resource):
+  """Handles GET, PUT, DELETE for words."""
   def get(self, word_id):
     """Retrieve a single word."""
     word = Word.query.get(word_id)

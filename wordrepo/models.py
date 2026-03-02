@@ -20,6 +20,16 @@ class PartOfSpeech(db.Model):
 
     words = db.relationship("Word", back_populates="part_of_speech")
 
+class Translation(db.Model):
+    __tablename__ = "translation"
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    word_id = db.Column(db.String(36), db.ForeignKey("word.id"), nullable=False)
+    text = db.Column(db.String(100), nullable=False)
+    language = db.Column(db.String(5), nullable=False)
+    note = db.Column(db.String(200), nullable=True)
+
+    word = db.relationship("Word", back_populates="translations")
+
 class Category(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(50), nullable=False)
@@ -37,6 +47,7 @@ class Word(db.Model):
 
     user = db.relationship("User", back_populates="words")
     part_of_speech = db.relationship("PartOfSpeech", back_populates="words")
+    translations = db.relationship("Translation", back_populates="word", cascade="all, delete-orphan")
     categories = db.relationship("Category", secondary="word_category", back_populates="words")
 
 # ----------------------

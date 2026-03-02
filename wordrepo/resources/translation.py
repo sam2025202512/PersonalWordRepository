@@ -1,9 +1,9 @@
+import uuid
 from flask import request
 from flask_restful import Resource
 from wordrepo.models import db, Translation, Word
-import uuid
 
-def tranlation_to_dict(t):
+def translation_to_dict(t):
   return {
     "id": t.id,
     "word_id": t.word_id,
@@ -13,13 +13,14 @@ def tranlation_to_dict(t):
   }
 
 class TranslationListResource(Resource):
+  """Handles GET, POST for translations."""
   def get(self, word_id):
     """Return all translations for a given word."""
     word = Word.query.get(word_id)
     if not word:
       return {"error": "word not found"}, 404
     translation = Translation.query.filter_by(word_id=word_id).all()
-    return [translation_to_dict(t) for t in translations], 200
+    return [translation_to_dict(t) for t in translation], 200
   def post(self, word_id):
     """Create a new translation for a given word."""
     word = Word.query.get(word_id)
@@ -36,17 +37,18 @@ class TranslationListResource(Resource):
       language = data["language"],
       note = data.get("note")
     )
-    db.session.add(new_transltion)
+    db.session.add(new_translation)
     db.session.commit()
     return translation_to_dict(new_translation), 201
 
 class TranslationResource(Resource):
-  def get(self, translatioin_id):
+  """Handles GET, PUT, DELETE for translations."""
+  def get(self, translation_id):
     """Retrieve a single translation"""
     t = Translation.query.get(translation_id)
     if not t:
       return {"error": "translation not found"}, 404
-    return translatioi_to_dict(t), 200
+    return translation_to_dict(t), 200
   def put(self, translation_id):
     """Update a translation"""
     t = Translation.query.get(translation_id)

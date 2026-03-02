@@ -1,7 +1,7 @@
+import uuid
 from flask import request
 from flask_restful import Resource
 from wordrepo.models import db, PartOfSpeech
-import uuid
 
 def pos_to_dict(pos):
   return {
@@ -11,10 +11,11 @@ def pos_to_dict(pos):
   }
 
 class PartOfSpeechListResource(Resource):
+  """Handles GET, POST for pos."""
   def get(self):
     """Return all parts of speech"""
     parts = PartOfSpeech.query.all()
-    return [post_to_dict(p) for p in parts], 200
+    return [pos_to_dict(p) for p in parts], 200
   def post(self):
     """Create a new part of speech"""
     data = request.get_json()
@@ -33,6 +34,7 @@ class PartOfSpeechListResource(Resource):
     return pos_to_dict(new_pos), 201
 
 class PartOfSpeechResource(Resource):
+  """Handles PUT, DELETE for pos."""
   def put(self, pos_id):
     """Update a part of speech."""
     pos = PartOfSpeech.query.get(pos_id)

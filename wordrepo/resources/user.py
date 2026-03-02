@@ -1,8 +1,8 @@
+import uuid
 from flask import request
 from flask_restful import Resource
 from werkzeug.security import generate_password_hash
 from wordrepo.models import db, User
-import uuid
 
 def user_to_dict(user):
   return {
@@ -12,6 +12,7 @@ def user_to_dict(user):
   }
 
 class UserListResource(Resource):
+  """Handles POST for users."""
   def post(self):
     """Create a new user"""
     data = request.get_json()
@@ -31,6 +32,7 @@ class UserListResource(Resource):
     return user_to_dict(new_user), 201
 
 class UserResource(Resource):
+  """Handles GET, PUT, DELETE for users."""
   def get(self, user_id):
     """Retrieve a single user by ID"""
     user = User.query.get(user_id)

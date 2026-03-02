@@ -1,7 +1,7 @@
+import uuid
 from flask import request
 from flask_restful import Resource
 from wordrepo.models import db, Category, User 
-import uuid
 
 def category_to_dict(category):
   return {
@@ -12,6 +12,7 @@ def category_to_dict(category):
   }
 
 class CategoryListResource(Resource):
+  """Handles POST for categories."""
   def post(self):
     """Create a new category."""
     data = request.get_json()
@@ -31,6 +32,7 @@ class CategoryListResource(Resource):
     return category_to_dict(new_category), 201
 
 class CategoryResource(Resource):
+  """Handles GET, PUT, DELETE for categories."""
   def get(self, category_id):
     """Retrieve a single category"""
     category = Category.query.get(category_id)
