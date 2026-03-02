@@ -11,7 +11,7 @@ def user_to_dict(user):
     "created_at": user.created_at.isoformat()
   }
 
-class UserListResources(Resource):
+class UserListResource(Resource):
   def post(self):
     """Create a new user"""
     data = request.get_json()
