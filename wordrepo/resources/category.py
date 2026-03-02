@@ -23,7 +23,7 @@ class CategoryListResource(Resource):
       return {"error": "user not found"}, 404
     new_category = Category(
       id=str(uuid.uuid4()),
-      user_id=data["user_id"]
+      user_id=data["user_id"],
       name=data["name"]
     )
     db.session.add(new_category)
