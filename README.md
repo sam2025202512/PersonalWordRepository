@@ -15,6 +15,7 @@ __Remember to include all required documentation and HOWTOs, including how to cr
 - Python 3
 - Flask
 - Flask-SQLAlchemy
+- Flask-RESTful
 - SQLite (default database)
 
 ---
