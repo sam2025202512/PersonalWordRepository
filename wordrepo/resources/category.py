@@ -1,9 +1,11 @@
+"""Category resource module for the Personal Word Repository."""
 import uuid
 from flask import request
 from flask_restful import Resource
-from wordrepo.models import db, Category, User 
+from wordrepo.models import db, Category, User
 
 def category_to_dict(category):
+    """Creates a dictionary for category."""
     return {
         "id": category.id,
         "user_id": category.user_id,

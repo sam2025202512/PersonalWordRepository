@@ -1,9 +1,11 @@
+"""Resource module for managing parts of speech."""
 import uuid
 from flask import request
 from flask_restful import Resource
 from wordrepo.models import db, PartOfSpeech
 
 def pos_to_dict(pos):
+    """Creates a dictionary for part of speech."""
     return {
       "id": pos.id,
       "name": pos.name,
@@ -17,7 +19,7 @@ class PartOfSpeechListResource(Resource):
         parts = PartOfSpeech.query.all()
         return [pos_to_dict(p) for p in parts], 200
     def post(self):
-        """Create a new part of speech"""
+        """Create a new part of speech."""
         data = request.get_json()
         # check for requirements
         if not data or "name" not in data:
@@ -46,10 +48,10 @@ class PartOfSpeechResource(Resource):
         db.session.commit()
         return pos_to_dict(pos), 200
     def delete(self, pos_id):
-        """Delete a part of speech"""
+        """Delete a part of speech."""
         pos = PartOfSpeech.query.get(pos_id)
         if not pos:
             return {"error": "part of speech not found"}, 404
         db.session.delete(pos)
         db.session.commit()
-        return {"message": "part of speech deleted"}, 200    
+        return {"message": "part of speech deleted"}, 200

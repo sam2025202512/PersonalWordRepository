@@ -1,9 +1,11 @@
+"""Resource module for managing translation."""
 import uuid
 from flask import request
 from flask_restful import Resource
 from wordrepo.models import db, Translation, Word
 
 def translation_to_dict(t):
+    """Creates a dictionary for translation."""
     return {
         "id": t.id,
         "word_id": t.word_id,

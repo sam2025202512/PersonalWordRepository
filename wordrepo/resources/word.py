@@ -1,9 +1,11 @@
+"""Resource module for managing words."""
 import uuid
 from flask import request
 from flask_restful import Resource
 from wordrepo.models import db, Word, User, PartOfSpeech, Category
 
 def word_to_dict(word):
+    """Creates a dictionary for words."""
     return {
         "id": word.id,
         "user_id": word.user_id,
@@ -41,7 +43,7 @@ class WordListResource(Resource):
                 category = Category.query.get(cid)
                 if category:
                     new_word.categories.append(category)
-            
+
         db.session.add(new_word)
         db.session.commit()
         return word_to_dict(new_word), 201

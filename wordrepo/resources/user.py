@@ -1,3 +1,4 @@
+"""Resource module for managing translation."""
 import uuid
 from flask import request
 from flask_restful import Resource
@@ -5,6 +6,7 @@ from werkzeug.security import generate_password_hash
 from wordrepo.models import db, User
 
 def user_to_dict(user):
+    """Creates a dictionary for users."""
     return {
         "id": user.id,
         "email": user.email,

@@ -1,13 +1,18 @@
+"""API initialization module for the Personal Word Repository."""
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 
 db = SQLAlchemy()
 
-def create_app():
+def create_app(config=None):
+    """Create and configure the Flask application."""
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///words.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    if config:
+        app.config.update(config)
 
     db.init_app(app)
     api = Api(app)
@@ -27,12 +32,11 @@ def create_app():
     api.add_resource(WordResource, "/words/<string:word_id>")
     #Translation endpoints
     api.add_resource(TranslationListResource, "/words/<string:word_id>/translations")
-    api.app_resource(TranslationResource, "/translations/<string:translation_id>")
+    api.add_resource(TranslationResource, "/translations/<string:translation_id>")
     # Category endpoints
     api.add_resource(CategoryListResource, "/categories")
-    api.app_resource(CategoryResource, "/categories/<string:category_id>")
+    api.add_resource(CategoryResource, "/categories/<string:category_id>")
     # Part of Speech endpoints
     api.add_resource(PartOfSpeechListResource, "/parts-of-speech")
-    api.app_resource(PartOfSpeechResource, "/parts-of-speech/<string:pos_id>")
-    
+    api.add_resource(PartOfSpeechResource, "/parts-of-speech/<string:pos_id>")
     return app

@@ -1,11 +1,13 @@
+"""Database models for the Personal Word Repository."""
 import uuid
 from datetime import datetime
 from wordrepo.api import db
 
-    # ----------------------
-    # Models
-    # ----------------------
+# ----------------------
+# Models
+# ----------------------
 class User(db.Model):
+    """Model representing a user account."""
     __tablename__ = "user"
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -13,10 +15,12 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     words = db.relationship("Word", back_populates="user", cascade="all, delete-orphan")
-    categories = db.relationship("Category", back_populates="user", cascade="all, delete-orphan")
+    categories = db.relationship("Category", back_populates="user", 
+                                 cascade="all, delete-orphan")
     quizzes = db.relationship("Quiz", back_populates="user", cascade="all, delete-orphan")
 
 class PartOfSpeech(db.Model):
+    """Model representing a part of speech (noun, verb, etc.)."""
     __tablename__ = "part_of_speech"
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(20), unique=True, nullable=False)  # e.g., noun, verb
@@ -26,6 +30,7 @@ class PartOfSpeech(db.Model):
     words = db.relationship("Word", back_populates="part_of_speech")
 
 class Translation(db.Model):
+    """Model representing a translation of a word."""
     __tablename__ = "translation"
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     word_id = db.Column(db.String(36), db.ForeignKey("word.id"), nullable=False)
@@ -36,31 +41,40 @@ class Translation(db.Model):
     word = db.relationship("Word", back_populates="translations")
 
 class Category(db.Model):
+    """Model representing a user-defined category for words."""
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(50), nullable=False)
-    user_id = db.Column(db.String(36), db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    user_id = db.Column(db.String(36), db.ForeignKey("user.id", ondelete="CASCADE"), 
+                        nullable=False)
 
     user = db.relationship("User", back_populates="categories")
-    words = db.relationship("Word", secondary="word_category", back_populates="categories")
+    words = db.relationship("Word", secondary="word_category", 
+                            back_populates="categories")
 
 class Word(db.Model):
+    """Model representing a word stored by a user."""
     __tablename__ = "word"
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    user_id = db.Column(db.String(36), db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    user_id = db.Column(db.String(36), db.ForeignKey("user.id", ondelete="CASCADE"),
+                        nullable=False)
     text = db.Column(db.String(100), nullable=False)
     language = db.Column(db.String(10), nullable=False)
-    part_of_speech_id = db.Column(db.String(36), db.ForeignKey("part_of_speech.id", ondelete="RESTRICT"), nullable=False)
+    part_of_speech_id = db.Column(db.String(36), db.ForeignKey("part_of_speech.id",
+                                                               ondelete="RESTRICT"),
+                                                               nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.relationship("User", back_populates="words")
     part_of_speech = db.relationship("PartOfSpeech", back_populates="words")
-    translations = db.relationship("Translation", back_populates="word", cascade="all, delete-orphan")
+    translations = db.relationship("Translation", back_populates="word", 
+                                   cascade="all, delete-orphan")
     categories = db.relationship("Category", secondary="word_category", back_populates="words")
 
-    # ----------------------
-    # Join table
-    # ----------------------
+# ----------------------
+# Join table
+# ----------------------
 class WordCategory(db.Model):
+    """Association table linking words to categories."""
     __tablename__ = "category"
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = db.Column(db.String(36), db.ForeignKey("user.id"), nullable=False)
