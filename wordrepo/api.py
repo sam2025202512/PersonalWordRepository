@@ -18,7 +18,6 @@ def create_app():
   from wordrepo.resources.translation import TranslationListResource, TranslationResource
   from wordrepo.resources.category import CategoryListResource, CategoryResource
   from wordrepo.resources.part_of_speech import PartOfSpeechListResource, PartOfSpeechResource
-  from wordrepo.resources.quiz import QuizListResource, QuizResource
 
   #User endpoints
   api.add_resource(UserListResource, "/users")
