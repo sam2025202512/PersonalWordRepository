@@ -28,7 +28,6 @@ class PartOfSpeechListResource(Resource):
         if PartOfSpeech.query.filter_by(name=data["name"]).first():
             return {"error": "part of speech already exists"}, 409
         new_pos = PartOfSpeech(
-            id=str(uuid.uuid4()),
             name=data["name"]
         )
         db.session.add(new_pos)
