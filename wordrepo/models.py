@@ -40,16 +40,19 @@ class Translation(db.Model):
     word = db.relationship("Word", back_populates="translations")
 
 class Category(db.Model):
-    """Model representing a user-defined category for words."""
     __tablename__ = "category"
+
+    __table_args__ = (
+        db.UniqueConstraint("user_id", "name", name="unique_user_category"),
+    )
+
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(50), nullable=False)
     user_id = db.Column(db.String(36), db.ForeignKey("user.id", ondelete="CASCADE"), 
                         nullable=False)
 
     user = db.relationship("User", back_populates="categories")
-    words = db.relationship("Word", secondary="word_category", 
-                            back_populates="categories")
+    words = db.relationship("Word", secondary="word_category", back_populates="categories")
 
 class Word(db.Model):
     """Model representing a word stored by a user."""
