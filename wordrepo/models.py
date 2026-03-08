@@ -75,7 +75,7 @@ class Word(db.Model):
 # ----------------------
 class WordCategory(db.Model):
     """Association table linking words to categories."""
-    __tablename__ = "category"
+    __tablename__ = "word_category"
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = db.Column(db.String(36), db.ForeignKey("user.id"), nullable=False)
     name = db.Column(db.String(50), nullable=False)  # unique per user enforced manually
