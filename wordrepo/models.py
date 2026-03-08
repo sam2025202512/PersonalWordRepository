@@ -17,7 +17,6 @@ class User(db.Model):
     words = db.relationship("Word", back_populates="user", cascade="all, delete-orphan")
     categories = db.relationship("Category", back_populates="user", 
                                  cascade="all, delete-orphan")
-    quizzes = db.relationship("Quiz", back_populates="user", cascade="all, delete-orphan")
 
 class PartOfSpeech(db.Model):
     """Model representing a part of speech (noun, verb, etc.)."""
@@ -42,6 +41,7 @@ class Translation(db.Model):
 
 class Category(db.Model):
     """Model representing a user-defined category for words."""
+    __tablename__ = "category"
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(50), nullable=False)
     user_id = db.Column(db.String(36), db.ForeignKey("user.id", ondelete="CASCADE"), 
@@ -59,9 +59,11 @@ class Word(db.Model):
                         nullable=False)
     text = db.Column(db.String(100), nullable=False)
     language = db.Column(db.String(10), nullable=False)
-    part_of_speech_id = db.Column(db.String(36), db.ForeignKey("part_of_speech.id",
-                                                               ondelete="RESTRICT"),
-                                                               nullable=False)
+    part_of_speech_id = db.Column(
+        db.Integer,
+        db.ForeignKey("part_of_speech.id", ondelete="RESTRICT"),
+        nullable=False
+    )
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.relationship("User", back_populates="words")
@@ -76,11 +78,15 @@ class Word(db.Model):
 class WordCategory(db.Model):
     """Association table linking words to categories."""
     __tablename__ = "word_category"
-    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    user_id = db.Column(db.String(36), db.ForeignKey("user.id"), nullable=False)
-    name = db.Column(db.String(50), nullable=False)  # unique per user enforced manually
 
-    user = db.relationship("User", back_populates="categories")
-    words = db.relationship(
-        "Word", secondary="word_category", back_populates="categories"
+    word_id = db.Column(
+        db.String(36),
+        db.ForeignKey("word.id", ondelete="CASCADE"),
+        primary_key=True
+    )
+
+    category_id = db.Column(
+        db.String(36),
+        db.ForeignKey("category.id", ondelete="CASCADE"),
+        primary_key=True
     )
