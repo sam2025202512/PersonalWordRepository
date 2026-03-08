@@ -19,7 +19,7 @@ class WordListResource(Resource):
     """Handles POST for words."""
     def post(self):
         """Create a new word."""
-        data = request.get_json()
+        data = request.get_json() or {}
         required = ["text", "language", "user_id", "part_of_speech_id"]
         #Check that everything required is given in the data
         if not all(field in data for field in required):
