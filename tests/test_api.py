@@ -1,13 +1,16 @@
 #functional test for the REST API
 
 def test_create_user_success(client):
-  # test that a valid user can be created
-  response = client.post("/users", json={
-    "email":"test@example.com",
-    "password": "hashed_password"
-  })
-  assert response.status_code == 201
-  assert "id" in response json
+
+    import uuid
+
+    response = client.post("/users", json={
+        "email": f"{uuid.uuid4()}@example.com",
+        "password": "hashed_password"
+    })
+
+    assert response.status_code == 201
+    assert "id" in response.json
 
 def test_create_user_missing_field(client):
   # test that missing field returns 400
@@ -35,7 +38,10 @@ def test_get_user_not_found(client):
 
 def test_create_part_of_speech(client):
   # Test creating a valid part of speech
-  response = client.post("/parts-of-speech", json={"name": "noun"})
+  response = client.post("/parts-of-speech", json={
+    "code": "noun",
+    "name": "noun"
+  })
   assert response.status_code == 201
   assert response.json["name"] == "noun"
 
@@ -46,7 +52,10 @@ def test_create_word_success(client):
     "password": "hashed_password"
   })
   user_id = user_resp.json["id"]
-  pos_resp = client.post("/parts-of-speech", json={"name": "verb"})
+  pos_resp = client.post("/parts-of-speech", json={
+    "code": "verb",
+    "name": "verb"
+  })
   pos_id = pos_resp.json["id"]
   response = client.post("/words", json={ "text": "run", "language": "en", "user_id": user_id, "part_of_speech_id": pos_id })
   assert response.status_code == 201
@@ -66,7 +75,10 @@ def test_delete_word(client):
   # Test that you can delete words
   user_resp = client.post("/users", json={ "email": "deleteword@example.com", "password": "secret" })
   user_id = user_resp.json["id"] 
-  pos_resp = client.post("/parts-of-speech", json={"name": "adjective"})
+  pos_resp = client.post("/parts-of-speech", json={
+    "code": "adjective",
+    "name": "adjective"
+  })
   pos_id = pos_resp.json["id"] 
   word_resp = client.post("/words", json={ 
     "text": "fast", 
