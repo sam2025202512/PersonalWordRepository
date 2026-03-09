@@ -70,7 +70,7 @@ class WordResource(Resource):
         if "part_of_speech_id" in data:
             if not PartOfSpeech.query.get(data["part_of_speech_id"]):
                 return {"error": "part_of_speech not found"}, 404
-        word.part_of_speech_id = data["part_of_speech_id"]
+            word.part_of_speech_id = data["part_of_speech_id"]
         if "category_ids" in data:
             word.categories.clear()
         for cid in data["category_ids"]:
