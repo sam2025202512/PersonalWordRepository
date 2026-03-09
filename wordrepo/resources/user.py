@@ -5,6 +5,8 @@ from flask_restful import Resource
 from werkzeug.security import generate_password_hash
 from wordrepo.models import db, User
 
+API_KEY = "API_KEY_12345"
+
 def user_to_dict(user):
     """Creates a dictionary for users."""
     return {
@@ -14,7 +16,17 @@ def user_to_dict(user):
     }
 
 class UserListResource(Resource):
-    """Handles POST for users."""
+    """Handles GET and POST for users."""
+    
+    def get(self):
+        """Return all users if API key matches"""
+        key = request.headers.get("Authorization")
+        if key != f"Bearer {API_KEY}":
+            return {"error": "unauthorized"}, 401
+
+        users = User.query.all()
+        return [user_to_dict(u) for u in users], 200
+
     def post(self):
         """Create a new user"""
         data = request.get_json()
