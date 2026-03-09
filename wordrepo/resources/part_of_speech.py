@@ -8,6 +8,7 @@ def pos_to_dict(pos):
     """Creates a dictionary for part of speech."""
     return {
       "id": pos.id,
+      "code": pos.code,
       "name": pos.name,
       "words": [w.id for w in pos.words]
     }
@@ -19,19 +20,22 @@ class PartOfSpeechListResource(Resource):
         parts = PartOfSpeech.query.all()
         return [pos_to_dict(p) for p in parts], 200
     def post(self):
-        """Create a new part of speech."""
         data = request.get_json()
-        # check for requirements
-        if not data or "name" not in data:
-            return {"error": "name is required"}, 400
-        #check if name already exists
-        if PartOfSpeech.query.filter_by(name=data["name"]).first():
+
+        if not data or "name" not in data or "code" not in data:
+            return {"error": "name and code are required"}, 400
+
+        if PartOfSpeech.query.filter_by(code=data["code"]).first():
             return {"error": "part of speech already exists"}, 409
+
         new_pos = PartOfSpeech(
+            code=data["code"],
             name=data["name"]
         )
+
         db.session.add(new_pos)
         db.session.commit()
+
         return pos_to_dict(new_pos), 201
 
 class PartOfSpeechResource(Resource):
