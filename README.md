@@ -99,25 +99,32 @@ python init_db.py
 python -m flask --app wordrepo.api:create_app run
 ```
 
-### Without activating the virtual environment
+## Running with Docker
 
-Windows:
+The project includes a `Dockerfile` and `docker-compose.yml` for containerized usage.
 
-```powershell
-python -m venv venv
-.\venv\Scripts\python.exe -m pip install -r requirements.txt
-.\venv\Scripts\python.exe init_db.py
-.\venv\Scripts\python.exe -m flask --app wordrepo.api:create_app run
-```
+### Option: Docker Compose
 
-Linux / macOS:
+Build and start the API:
 
 ```bash
-python3 -m venv venv
-venv/bin/pip install -r requirements.txt
-venv/bin/python init_db.py
-venv/bin/python -m flask --app wordrepo.api:create_app run
+docker compose up --build
 ```
+
+The API will be available at:
+
+```text
+http://127.0.0.1:5000/
+```
+
+The SQLite database is stored in the local `instance/` folder and mounted into the container, so data persists between restarts.
+
+Stop the service with:
+
+```bash
+docker compose down
+```
+
 
 ## API entry point
 
@@ -141,32 +148,6 @@ The raw OpenAPI file is available at:
 
 ```text
 http://127.0.0.1:5000/openapi.yaml
-```
-
-## Running with Docker
-
-The project includes a `Dockerfile` and `docker-compose.yml` for containerized usage.
-
-### Option 1: Docker Compose
-
-Build and start the API:
-
-```bash
-docker compose up --build
-```
-
-The API will be available at:
-
-```text
-http://127.0.0.1:5000/
-```
-
-The SQLite database is stored in the local `instance/` folder and mounted into the container, so data persists between restarts.
-
-Stop the service with:
-
-```bash
-docker compose down
 ```
 
 ## Code Quality
