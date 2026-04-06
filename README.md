@@ -99,7 +99,7 @@ python init_db.py
 python -m flask --app wordrepo.api:create_app run
 ```
 
-## Running with Docker (Docker Compose)
+## Option: Running with Docker (Docker Compose)
 
 The project includes a `Dockerfile` and `docker-compose.yml` for containerized usage.
 
