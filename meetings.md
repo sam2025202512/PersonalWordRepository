@@ -27,15 +27,15 @@ As we did not have a meeting for the 1st deliverable we went over our project. A
 
 
 ## Meeting 3.
-* **DATE:**
-* **PARTICIPANTS:**
-* **TEACHER:**
+* **DATE: 10.3.2026**
+* **PARTICIPANTS: Saara Laasonen**
+* **TEACHER: Mika Oja**
 
 ### Action points
-*List here the actions points discussed with assistants*
+During the meeting several changes and issues were brought up. The table in the deliverable 3, needs to be edited as now there are resources with multiple url (for example /users, /users/{user_id}). These should be two separate resources instead of just one under the name 'users'. Some comments on the code to make it more easily legible were given. Like adding empty rows between two definitions and after the comments. Authentication was mentioned in the wiki but it seemed to be missing in the code. How to start the program was also missing from the README. This needs to be added. I was unable to start the program so the implementation needs to be checked during the deliverable 4. Testing was very limited and I could not run them so they will need to be implemented as well.
 
 ### Notes
-*Add here notes that you consider important. This is not mandatory*
+For the missing implementation, they can be added and the wiki can be updated. These can be detailed in the deadline 5 wiki and returned in the corresponding lovelace return box with comment on what has been updated on the previous deliverable.
 
 
 ## Meeting 4.
