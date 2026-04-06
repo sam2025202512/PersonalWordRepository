@@ -64,10 +64,6 @@ python init_db.py
 5. Start the Flask API:
 
 ```powershell
-cd PersonalWordRepository
-```
-
-```powershell
 python -m flask --app wordrepo.api:create_app run
 ```
 
@@ -99,11 +95,6 @@ python init_db.py
 
 5. Start the Flask API:
 
-
-```bash
-cd PersonalWordrepository
-```
-
 ```bash
 python -m flask --app wordrepo.api:create_app run
 ```
@@ -134,6 +125,54 @@ After starting the server, the API is available at:
 
 ```text
 http://127.0.0.1:5000/
+```
+
+## API documentation
+
+The repository includes an OpenAPI 3.0 specification at `docs/openapi.yaml`.
+
+When the server is running, the documentation is available live at:
+
+```text
+http://127.0.0.1:5000/docs
+```
+
+The raw OpenAPI file is available at:
+
+```text
+http://127.0.0.1:5000/openapi.yaml
+```
+
+To validate the specification manually, open `docs/openapi.yaml` in Swagger Editor:
+
+```text
+https://editor.swagger.io/
+```
+
+## Running with Docker
+
+The project includes a `Dockerfile` and `docker-compose.yml` for containerized usage.
+
+### Option 1: Docker Compose
+
+Build and start the API:
+
+```bash
+docker compose up --build
+```
+
+The API will be available at:
+
+```text
+http://127.0.0.1:5000/
+```
+
+The SQLite database is stored in the local `instance/` folder and mounted into the container, so data persists between restarts.
+
+Stop the service with:
+
+```bash
+docker compose down
 ```
 
 ## Code Quality
