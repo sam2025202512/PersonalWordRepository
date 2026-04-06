@@ -29,59 +29,111 @@ Main dependencies:
 - Flask
 - Flask-SQLAlchemy
 - Flask-RESTful
---- 
-
-## Option 1: install dependencies without virtual environment
-
-Step 1: install requirements
-
-```bash
-pip install -r requirements.txt
-
-```
-
-## Option 2: Use virtual environment and install dependencies:
-
-Step 1: Create a virtual environment
-```bash
-python -m venv venv
-
-```
-
-Step 2: Activate the environment
-For Windows:
-```bash
-venv\Scripts\activate
-
-```
-
-For macOS/Linux:
-```bash
-source venv/bin/activate
-
-```
-
-Step 3: Install dependencies
-```bash
-pip install -r requirements.txt
-
-```
-
 ---
 
-## Populate the test database:
+## Running the project
+
+Run all commands from the project root directory, where `README.md`, `init_db.py`, and the `wordrepo/` folder are located.
+
+### Windows (PowerShell)
+
+1. Create a virtual environment:
+
+```powershell
+python -m venv venv
+```
+
+2. Activate the virtual environment:
+
+```powershell
+.\venv\Scripts\Activate.ps1
+```
+
+3. Install dependencies:
+
+```powershell
+pip install -r requirements.txt
+```
+
+4. Initialize the database:
+
+```powershell
+python init_db.py
+```
+
+5. Start the Flask API:
+
+```powershell
+cd PersonalWordRepository
+```
+
+```powershell
+python -m flask --app wordrepo.api:create_app run
+```
+
+### Linux / macOS (Bash)
+
+1. Create a virtual environment:
 
 ```bash
-python populate.py
+python3 -m venv venv
+```
 
+2. Activate the virtual environment:
+
+```bash
+source venv/bin/activate
+```
+
+3. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+4. Initialize the database:
+
+```bash
+python init_db.py
+```
+
+5. Start the Flask API:
+
+
+```bash
+cd PersonalWordrepository
+```
+
+```bash
+python -m flask --app wordrepo.api:create_app run
+```
+
+### Without activating the virtual environment
+
+Windows:
+
+```powershell
+python -m venv venv
+.\venv\Scripts\python.exe -m pip install -r requirements.txt
+.\venv\Scripts\python.exe init_db.py
+.\venv\Scripts\python.exe -m flask --app wordrepo.api:create_app run
+```
+
+Linux / macOS:
+
+```bash
+python3 -m venv venv
+venv/bin/pip install -r requirements.txt
+venv/bin/python init_db.py
+venv/bin/python -m flask --app wordrepo.api:create_app run
 ```
 
 ## API entry point
 
-Entry point:
-```bash
-http://localhost:5000/
+After starting the server, the API is available at:
 
+```text
+http://127.0.0.1:5000/
 ```
 
 ## Code Quality
