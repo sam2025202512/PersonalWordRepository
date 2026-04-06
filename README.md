@@ -143,12 +143,6 @@ The raw OpenAPI file is available at:
 http://127.0.0.1:5000/openapi.yaml
 ```
 
-To validate the specification manually, open `docs/openapi.yaml` in Swagger Editor:
-
-```text
-https://editor.swagger.io/
-```
-
 ## Running with Docker
 
 The project includes a `Dockerfile` and `docker-compose.yml` for containerized usage.
