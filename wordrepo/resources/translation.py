@@ -56,7 +56,7 @@ class TranslationResource(Resource):
         t = Translation.query.get(translation_id)
         if not t:
             return {"error": "translation not found"}, 404
-        data = request.get_json()
+        data = request.get_json() or {}
         if "text" in data:
             t.text = data["text"]
         if "language" in data:
@@ -72,4 +72,4 @@ class TranslationResource(Resource):
             return {"error": "translation not found"}, 404
         db.session.delete(t)
         db.session.commit()
-        return {"message": "translation deletec"}, 200
+        return {"message": "translation deleted"}, 200
