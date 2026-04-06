@@ -17,13 +17,19 @@ class CategoryListResource(Resource):
     """Handles POST for categories."""
     def post(self):
         """Create a new category."""
-        data = request.get_json()
+        data = request.get_json() or {}
         if not data or "name" not in data or "user_id" not in data:
             return {"error": "name and user_id are required"}, 400
         #validate the user
         user = User.query.get(data["user_id"])
         if not user:
             return {"error": "user not found"}, 404
+        existing_category = Category.query.filter_by(
+            user_id=data["user_id"],
+            name=data["name"]
+        ).first()
+        if existing_category:
+            return {"error": "category already exists for user"}, 409
         new_category = Category(
             id=str(uuid.uuid4()),
             user_id=data["user_id"],
@@ -46,8 +52,14 @@ class CategoryResource(Resource):
         category = Category.query.get(category_id)
         if not category:
             return {"error": "category not found"}, 404
-        data = request.get_json()
+        data = request.get_json() or {}
         if "name" in data:
+            existing_category = Category.query.filter_by(
+                user_id=category.user_id,
+                name=data["name"]
+            ).first()
+            if existing_category and existing_category.id != category.id:
+                return {"error": "category already exists for user"}, 409
             category.name = data["name"]
         db.session.commit()
         return category_to_dict(category), 200
