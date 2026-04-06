@@ -61,7 +61,7 @@ class WordResource(Resource):
         word = Word.query.get(word_id)
         if not word:
             return {"error": "word not found"}, 404
-        data = request.get_json()
+        data = request.get_json() or {}
         # check what is changed
         if "text" in data:
             word.text = data["text"]
@@ -73,10 +73,10 @@ class WordResource(Resource):
             word.part_of_speech_id = data["part_of_speech_id"]
         if "category_ids" in data:
             word.categories.clear()
-        for cid in data["category_ids"]:
-            category = Category.query.get(cid)
-            if category:
-                word.categories.append(category)
+            for cid in data["category_ids"]:
+                category = Category.query.get(cid)
+                if category:
+                    word.categories.append(category)
         db.session.commit()
         return word_to_dict(word), 200
     def delete(self, word_id):
