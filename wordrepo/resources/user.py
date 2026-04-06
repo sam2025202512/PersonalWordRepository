@@ -58,8 +58,11 @@ class UserResource(Resource):
         user = User.query.get(user_id)
         if not user:
             return {"error": "user not found"}, 404
-        data = request.get_json()
+        data = request.get_json() or {}
         if "email" in data:
+            existing_user = User.query.filter_by(email=data["email"]).first()
+            if existing_user and existing_user.id != user.id:
+                return {"error": "email already in use"}, 409
             user.email = data["email"]
         if "password" in data:
             user.password_hash = generate_password_hash(data["password"])
