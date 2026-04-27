@@ -8,6 +8,12 @@
 
 This project implements a RESTful API for storing, categorizing and translating personal vocabulary. The repository includes full documentation on setup, database initialization, running the API, and code quality verification.
 
+The repository also includes:
+
+- a Flask-based GUI client in `client/`
+- an auxiliary learning service in `auxiliary_service/`
+- ecosystem documentation in `docs/final_deadline_overview.md`
+
 ---
 
 ## Technologies
@@ -29,6 +35,8 @@ Main dependencies:
 - Flask
 - Flask-SQLAlchemy
 - Flask-RESTful
+
+Development and test dependencies are listed in `requirements-dev.txt`.
 ---
 
 ## Running the project
@@ -99,20 +107,28 @@ python init_db.py
 python -m flask --app wordrepo.api:create_app run
 ```
 
-## Option: Running with Docker (Docker Compose)
+## Option: Running the full ecosystem with Docker Compose
 
-The project includes a `Dockerfile` and `docker-compose.yml` for containerized usage.
+The repository includes Docker support for:
 
-Build and start the API:
+- the main API
+- the auxiliary service
+- the GUI client
+
+Build and start the whole ecosystem with one command:
 
 ```bash
 docker compose up --build
 ```
 
-The API will be available at:
+This command starts all three services together, so you do not need to run the main API, the auxiliary service, and the client separately when using Docker Compose.
+
+After startup:
 
 ```text
-http://127.0.0.1:5000/
+Main API: http://127.0.0.1:5000/
+Auxiliary service: http://127.0.0.1:5001/
+Client: http://127.0.0.1:5050/
 ```
 
 The SQLite database is stored in the local `instance/` folder and mounted into the container, so data persists between restarts.
@@ -147,6 +163,33 @@ The raw OpenAPI file is available at:
 ```text
 http://127.0.0.1:5000/openapi.yaml
 ```
+
+## Final deliverable components
+
+- Main API: `wordrepo/`
+- Client application: `client/`
+- Auxiliary service: `auxiliary_service/`
+
+Component-specific documentation:
+
+- `client/README.md`
+- `auxiliary_service/README.md`
+- `docs/final_deadline_overview.md`
+
+## Testing
+
+Run the automated tests with:
+
+```bash
+pytest -q
+```
+
+Run the tests with coverage:
+
+```bash
+pytest --cov=wordrepo --cov-report=term-missing
+```
+
 
 ## Code Quality
 
