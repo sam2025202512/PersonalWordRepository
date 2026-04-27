@@ -16,7 +16,28 @@ def word_to_dict(word):
     }
 
 class WordListResource(Resource):
-    """Handles POST for words."""
+    """Handles GET and POST for words."""
+    def get(self):
+        """Return words, optionally filtered by user, language, category, or text."""
+        query = Word.query
+
+        user_id = request.args.get("user_id")
+        language = request.args.get("language")
+        category_id = request.args.get("category_id")
+        search = request.args.get("search")
+
+        if user_id:
+            query = query.filter_by(user_id=user_id)
+        if language:
+            query = query.filter_by(language=language)
+        if category_id:
+            query = query.join(Word.categories).filter(Category.id == category_id)
+        if search:
+            query = query.filter(Word.text.ilike(f"%{search}%"))
+
+        words = query.order_by(Word.text.asc()).all()
+        return [word_to_dict(word) for word in words], 200
+
     def post(self):
         """Create a new word."""
         data = request.get_json() or {}

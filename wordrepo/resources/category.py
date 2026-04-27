@@ -14,7 +14,16 @@ def category_to_dict(category):
     }
 
 class CategoryListResource(Resource):
-    """Handles POST for categories."""
+    """Handles GET and POST for categories."""
+    def get(self):
+        """Return categories, optionally filtered by user."""
+        query = Category.query
+        user_id = request.args.get("user_id")
+        if user_id:
+            query = query.filter_by(user_id=user_id)
+        categories = query.order_by(Category.name.asc()).all()
+        return [category_to_dict(category) for category in categories], 200
+
     def post(self):
         """Create a new category."""
         data = request.get_json() or {}

@@ -28,7 +28,7 @@ class TranslationListResource(Resource):
         word = Word.query.get(word_id)
         if not word:
             return {"error": "word not found"}, 404
-        data = request.get_json()
+        data = request.get_json() or {}
         required = ["text", "language"]
         if not all(field in data for field in required):
             return {"error":"text and language are required"}, 400
