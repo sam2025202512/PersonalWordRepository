@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Workspace overview</p>
+  </div>
+</section>
+
+<section class="stats-grid">
+  <article class="stat-card">
+    <span>Total words</span>
+    <strong>{{ total_words }}</strong>
+  </article>
+  <article class="stat-card">
+    <span>Categories</span>
+    <strong>{{ total_categories }}</strong>
+  </article>
+  <article class="stat-card">
+    <span>Words missing translations</span>
+    <strong>{{ missing_translation_count }}</strong>
+  </article>
+</section>
+
+<section class="grid-two">
+  <article class="panel">
+    <h3>Language distribution</h3>
+    {% if language_breakdown %}
+      <ul class="list-clean">
+        {% for language, count in language_breakdown %}
+          <li><span>{{ language }}</span><strong>{{ count }}</strong></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">No words added yet.</p>
+    {% endif %}
+  </article>
+
+  <article class="panel">
+    <h3>Recent library sample</h3>
+    {% if words %}
+      <ul class="list-clean">
+        {% for word in words %}
+          <li>
+            <a href="{{ url_for('word_detail', word_id=word.id) }}">{{ word.text }}</a>
+            <span class="muted">{{ word.language }} | {{ word.translation_count }} translations</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">Start by creating your first word in the library view.</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

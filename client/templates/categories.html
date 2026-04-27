@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Categories{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Library structure</p>
+    <h2>Categories</h2>
+  </div>
+</section>
+
+<section class="grid-two">
+  <form class="panel" method="post" action="{{ url_for('create_category_action') }}">
+    <h3>Create category</h3>
+    <label>Name
+      <input type="text" name="name" placeholder="travel" required>
+    </label>
+    <button type="submit">Add Category</button>
+  </form>
+
+  <article class="panel">
+    <h3>Existing categories</h3>
+    {% if categories %}
+      <ul class="card-list">
+        {% for category in categories %}
+          <li class="translation-card">
+            <div>
+              <strong>{{ category.name }}</strong>
+              <p>{{ category.words|length }} linked words</p>
+            </div>
+            <form method="post" action="{{ url_for('delete_category_action', category_id=category.id) }}">
+              <button class="ghost" type="submit">Delete</button>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">No categories yet.</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

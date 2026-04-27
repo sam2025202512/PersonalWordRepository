@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Connect Client{% endblock %}
+{% block content %}
+<section class="hero-card plain-home">
+  <div class="stack home-forms">
+    <form class="panel" method="post" action="{{ url_for('register') }}">
+      <h2>Create a new workspace</h2>
+      <label>Email
+        <input type="email" name="email" placeholder="learner@example.com" required>
+      </label>
+      <label>Password
+        <input type="password" name="password" placeholder="Choose a password" required>
+      </label>
+      <button type="submit">Create Workspace</button>
+    </form>
+
+    <form class="panel" method="post" action="{{ url_for('connect') }}">
+      <h2>Connect to existing workspace</h2>
+      <label>User ID
+        <input type="text" name="user_id" placeholder="Paste an existing user id" required>
+      </label>
+      <p class="hint">
+        Use this when you already created a profile through the API and want to
+        continue from the client.
+      </p>
+      <button type="submit">Connect Workspace</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

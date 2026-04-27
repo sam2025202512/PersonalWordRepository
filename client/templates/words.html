@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Words{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Client feature</p>
+    <h2>Word library</h2>
+  </div>
+</section>
+
+<section class="grid-two">
+  <form class="panel" method="post" action="{{ url_for('create_word_action') }}">
+    <h3>Add a new word</h3>
+    <label>Word text
+      <input type="text" name="text" placeholder="run" required>
+    </label>
+    <label>Language
+      <input type="text" name="language" placeholder="en" required>
+    </label>
+    <label>Part of speech
+      <select name="part_of_speech_id" required>
+        <option value="">Select a part of speech</option>
+        {% for pos in parts_of_speech %}
+          <option value="{{ pos.id }}">{{ pos.name }} ({{ pos.code }})</option>
+        {% endfor %}
+      </select>
+    </label>
+    <fieldset>
+      <legend>Categories</legend>
+      <div class="checkbox-grid">
+        {% for category in categories %}
+          <label class="checkbox-item">
+            <input type="checkbox" name="category_ids" value="{{ category.id }}">
+            <span>{{ category.name }}</span>
+          </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+    <button type="submit">Create Word</button>
+  </form>
+
+  <form class="panel" method="get" action="{{ url_for('words') }}">
+    <h3>Filter library</h3>
+    <label>Search text
+      <input type="text" name="search" value="{{ search }}" placeholder="cat">
+    </label>
+    <label>Language
+      <select name="language">
+        <option value="">All languages</option>
+        {% for language_item in languages %}
+          <option value="{{ language_item }}" {% if language_item == selected_language %}selected{% endif %}>{{ language_item }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Category
+      <select name="category_id">
+        <option value="">All categories</option>
+        {% for category in categories %}
+          <option value="{{ category.id }}" {% if category.id == selected_category_id %}selected{% endif %}>{{ category.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit">Apply Filters</button>
+  </form>
+</section>
+
+<section class="panel">
+  <h3>Saved words</h3>
+  {% if words %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Word</th>
+          <th>Language</th>
+          <th>Categories</th>
+          <th>Translations</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for word in words %}
+        <tr>
+          <td>{{ word.text }}</td>
+          <td>{{ word.language }}</td>
+          <td>{{ ", ".join(word.category_names) if word.category_names else "No categories" }}</td>
+          <td>{{ word.translation_count }}</td>
+          <td><a href="{{ url_for('word_detail', word_id=word.id) }}">Open</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <p class="muted">No words match the current filters.</p>
+  {% endif %}
+</section>
+{% endblock %}

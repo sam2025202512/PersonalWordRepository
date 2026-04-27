@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Word Details{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Word detail</p>
+    <h2>{{ word.text }}</h2>
+    <p class="muted">Language: {{ word.language }}</p>
+  </div>
+</section>
+
+<section class="grid-two">
+  <form class="panel" method="post" action="{{ url_for('update_word_action', word_id=word.id) }}">
+    <h3>Edit word</h3>
+    <label>Text
+      <input type="text" name="text" value="{{ word.text }}" required>
+    </label>
+    <label>Language
+      <input type="text" name="language" value="{{ word.language }}" required>
+    </label>
+    <label>Part of speech
+      <select name="part_of_speech_id" required>
+        {% for pos in parts_of_speech %}
+          <option value="{{ pos.id }}" {% if pos.id == word.part_of_speech_id %}selected{% endif %}>{{ pos.name }} ({{ pos.code }})</option>
+        {% endfor %}
+      </select>
+    </label>
+    <fieldset>
+      <legend>Categories</legend>
+      <div class="checkbox-grid">
+        {% for category in categories %}
+          <label class="checkbox-item">
+            <input type="checkbox" name="category_ids" value="{{ category.id }}" {% if category.id in word.categories %}checked{% endif %}>
+            <span>{{ category.name }}</span>
+          </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+    <button type="submit">Save Changes</button>
+  </form>
+
+  <div class="stack">
+    <form class="panel" method="post" action="{{ url_for('create_translation_action', word_id=word.id) }}">
+      <h3>Add translation</h3>
+      <label>Translation text
+        <input type="text" name="text" placeholder="juosta" required>
+      </label>
+      <label>Language
+        <input type="text" name="language" placeholder="fi" required>
+      </label>
+      <label>Note
+        <input type="text" name="note" placeholder="Common verb">
+      </label>
+      <button type="submit">Add Translation</button>
+    </form>
+
+    <form class="panel danger-panel" method="post" action="{{ url_for('delete_word_action', word_id=word.id) }}">
+      <h3>Danger zone</h3>
+      <p class="muted">Delete the whole word entry and all its translations.</p>
+      <button class="danger" type="submit">Delete Word</button>
+    </form>
+  </div>
+</section>
+
+<section class="grid-two">
+  <article class="panel">
+    <h3>Translations</h3>
+    {% if translations %}
+      <ul class="card-list">
+        {% for translation in translations %}
+          <li class="translation-card">
+            <div>
+              <strong>{{ translation.text }}</strong>
+              <p>{{ translation.language }}{% if translation.note %} | {{ translation.note }}{% endif %}</p>
+            </div>
+            <form method="post" action="{{ url_for('delete_translation_action', translation_id=translation.id) }}">
+              <input type="hidden" name="word_id" value="{{ word.id }}">
+              <button class="ghost" type="submit">Delete</button>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">No translations yet.</p>
+    {% endif %}
+  </article>
+
+  <article class="panel">
+    <h3>Quiz note</h3>
+    <p class="muted">
+      This word becomes quiz-ready when it has at least one translation in your chosen target language.
+    </p>
+    <p class="muted">
+      Use the Quiz Lab to generate category-based or part-of-speech-based tests from your saved words.
+    </p>
+    <a href="{{ url_for('quiz') }}">Open Quiz Lab</a>
+  </article>
+</section>
+{% endblock %}

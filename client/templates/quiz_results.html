@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Quiz Results{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Quiz results</p>
+    <h2>{{ results.score }} / {{ results.total }}</h2>
+    <p class="muted">Accuracy: {{ results.percentage }}%</p>
+  </div>
+</section>
+
+<section class="panel">
+  <h3>Answer review</h3>
+  <ul class="card-list">
+    {% for result in results.results %}
+      <li class="study-card">
+        <div>
+          <strong>{{ result.prompt }}</strong>
+          <p>Submitted: {{ result.submitted_answer or "No answer" }}</p>
+          <p>Accepted answers: {{ result.correct_answers|join(", ") }}</p>
+          <span class="pill">
+            {% if result.is_correct %}
+              Correct
+            {% else %}
+              Incorrect
+            {% endif %}
+          </span>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+  <p><a href="{{ url_for('quiz') }}">Generate another quiz</a></p>
+</section>
+{% endblock %}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Word Repository Client{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <div class="shell">
+      {% if user %}
+      <aside class="sidebar">
+        <div>
+          <p class="eyebrow">Personal Word Repository</p>
+          <p class="muted">{{ user.email }}</p>
+        </div>
+        <nav class="nav">
+          <a href="{{ url_for('dashboard') }}">Dashboard</a>
+          <a href="{{ url_for('words') }}">Words</a>
+          <a href="{{ url_for('categories') }}">Categories</a>
+          <a href="{{ url_for('quiz') }}">Quiz</a>
+          <a href="http://127.0.0.1:5000/docs" target="_blank" rel="noreferrer">API Docs</a>
+        </nav>
+        <form method="post" action="{{ url_for('logout') }}">
+          <button class="ghost" type="submit">Disconnect Workspace</button>
+        </form>
+      </aside>
+      {% endif %}
+
+      <main class="main {% if not user %}main-centered{% endif %}">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <section class="flash-stack">
+              {% for category, message in messages %}
+                <div class="flash flash-{{ category }}">{{ message }}</div>
+              {% endfor %}
+            </section>
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </body>
+</html>

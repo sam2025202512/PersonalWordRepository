@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Quiz{% endblock %}
+{% block content %}
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Auxiliary service feature</p>
+    <h2>Quiz</h2>
+    <p class="muted">Build vocabulary quizzes by category, part of speech, language, and question count.</p>
+  </div>
+</section>
+
+<section class="grid-two">
+  <form class="panel" method="post" action="{{ url_for('quiz') }}">
+    <h3>Create quiz</h3>
+    <label>Target language
+      <input type="text" name="target_language" value="{{ target_language }}" required>
+    </label>
+    <label>Question count
+      <input type="number" name="limit" min="1" max="20" value="{{ limit }}" required>
+    </label>
+    <label>Word language
+      <input type="text" name="language" value="{{ selected_language }}" placeholder="Optional source language filter">
+    </label>
+    <label>Category
+      <select name="category_id">
+        <option value="">All categories</option>
+        {% for category in categories %}
+          <option value="{{ category.id }}" {% if category.id == selected_category_id %}selected{% endif %}>{{ category.name }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Part of speech
+      <select name="part_of_speech_code">
+        <option value="">All parts of speech</option>
+        {% for pos in parts_of_speech %}
+          <option value="{{ pos.code }}" {% if pos.code == selected_pos_code %}selected{% endif %}>{{ pos.name }} ({{ pos.code }})</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit">Generate Quiz</button>
+  </form>
+
+  <article class="panel">
+    <h3>How it works</h3>
+    <p class="muted">
+      The auxiliary service fetches matching words from the main API, keeps only words
+      that already have translations in the chosen target language, and returns a ready-made quiz.
+    </p>
+  </article>
+</section>
+
+{% if quiz_payload %}
+<section class="panel">
+  <h3>Generated quiz</h3>
+  <p class="muted">{{ quiz_payload.summary }}</p>
+  {% if quiz_payload.questions %}
+    <form method="post" action="{{ url_for('quiz_check') }}">
+      <ol class="quiz-list">
+        {% for question in quiz_payload.questions %}
+          <li class="quiz-item">
+            <label>
+              <strong>{{ question.prompt }}</strong>
+              <span class="muted">{{ question.source_language }} -> {{ question.target_language }} | {{ question.part_of_speech }}</span>
+              <input type="text" name="answer_{{ question.word_id }}" placeholder="Type your answer" required>
+            </label>
+          </li>
+        {% endfor %}
+      </ol>
+      <button type="submit">Check Answers</button>
+    </form>
+  {% else %}
+    <p class="muted">No quiz questions were generated with the current filters.</p>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}

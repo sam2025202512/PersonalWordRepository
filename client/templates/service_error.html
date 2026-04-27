@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Service Error{% endblock %}
+{% block content %}
+<section class="panel">
+  <p class="eyebrow">Downstream error</p>
+  <h2>One of the backend services could not complete the request.</h2>
+  <p class="muted">{{ message }}</p>
+  {% if status_code %}
+    <p class="muted">Status code: {{ status_code }}</p>
+  {% endif %}
+  {% if user %}
+    <a href="{{ url_for('dashboard') }}">Return to dashboard</a>
+  {% else %}
+    <a href="{{ url_for('home') }}">Return to home</a>
+  {% endif %}
+</section>
+{% endblock %}
