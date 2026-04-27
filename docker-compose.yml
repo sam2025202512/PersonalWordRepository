@@ -7,3 +7,28 @@ services:
       SQLALCHEMY_DATABASE_URI: sqlite:////app/instance/words.db
     volumes:
       - ./instance:/app/instance
+  auxiliary_service:
+    build:
+      context: .
+      dockerfile: auxiliary_service/Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      PWR_API_BASE_URL: http://api:5000
+      PORT: 5001
+    depends_on:
+      - api
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    ports:
+      - "5050:5050"
+    environment:
+      PWR_API_BASE_URL: http://api:5000
+      PWR_AUXILIARY_BASE_URL: http://auxiliary_service:5001
+      PWR_CLIENT_SECRET: docker-client-secret
+      PORT: 5050
+    depends_on:
+      - api
+      - auxiliary_service
